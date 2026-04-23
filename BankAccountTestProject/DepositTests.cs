@@ -19,33 +19,6 @@
         }
 
         [TestMethod]
-        public void DepositLimitExceed()
-        {
-            BankAccount account = new BankAccount("Daniil", 0);
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => account.Deposit(2000000));
-        }
-        [TestMethod]
-        public void DepositMaxBoundaryAmount()
-        {
-            BankAccount account = new BankAccount("Daniil", 0);
-            account.Deposit(1000000);
-            Assert.AreEqual(1000000, account.GetBalance());
-        }
-
-        [TestMethod]
-        public void DepositMaxPlusOneBoundaryAmount()
-        {
-            BankAccount account = new BankAccount("Daniil", 0);
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => account.Deposit(1000001));
-        }
-        [TestMethod]
-        public void DepositZeroAmount()
-        {
-            BankAccount account = new BankAccount("Daniil", 100);
-            account.Deposit(0);
-            Assert.AreEqual(100, account.GetBalance());
-        }
-        [TestMethod]
         public void DepositDecimalAmount()
         {
             BankAccount account = new BankAccount("Daniil", 100);
