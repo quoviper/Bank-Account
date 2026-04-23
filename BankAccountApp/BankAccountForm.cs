@@ -5,13 +5,13 @@ namespace BankAccountApp
 {
     public class BankAccountForm : Form
     {
-        private BankAccount account;
-        private TextBox nameTextBox;
-        private TextBox amountTextBox;
-        private Label balanceLabel;
-        private Button createAccountButton;
-        private Button depositButton;
-        private Button withdrawButton;
+        public BankAccount account;
+        public TextBox nameTextBox;
+        public TextBox amountTextBox;
+        public Label balanceLabel;
+        public Button createAccountButton;
+        public Button depositButton;
+        public Button withdrawButton;
         public BankAccountForm()
         {
             this.Text = "Управление банковским счётом";
