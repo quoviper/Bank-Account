@@ -8,6 +8,8 @@ namespace BankAccountApp
         public BankAccount account;
         public TextBox nameTextBox;
         public TextBox amountTextBox;
+        public Label nameLabel;
+        public Label amountLabel;
         public Label balanceLabel;
         public Button createAccountButton;
         public Button depositButton;
@@ -17,45 +19,59 @@ namespace BankAccountApp
             this.Text = "Управление банковским счётом";
             this.Width = 400;
             this.Height = 300;
-            nameTextBox = new TextBox
+            nameLabel = new Label
             {
                 Location = new System.Drawing.Point(10, 10),
+                Text = "Имя владельца",
+                Width = 200,
+            };
+            nameTextBox = new TextBox
+            {
+                Location = new System.Drawing.Point(10, 25),
+                Width = 200,
+            };
+            amountLabel = new Label
+            {
+                Location = new System.Drawing.Point(10, 50),
+                Text = "Сумма",
                 Width = 200,
             };
             amountTextBox = new TextBox
             {
-                Location = new System.Drawing.Point(10, 40),
+                Location = new System.Drawing.Point(10, 65),
                 Width = 200,
             };
             createAccountButton = new Button
             {
-                Location = new System.Drawing.Point(10, 70),
+                Location = new System.Drawing.Point(10, 100),
                 Text = "Создать счёт",
                 Width = 100
             };
             createAccountButton.Click += CreateAccountButton_Click;
             depositButton = new Button
             {
-                Location = new System.Drawing.Point(120, 70),
+                Location = new System.Drawing.Point(120, 100),
                 Text = "Пополнить",
                 Width = 100
             };
             depositButton.Click += DepositButton_Click;
             withdrawButton = new Button
             {
-                Location = new System.Drawing.Point(10, 100),
+                Location = new System.Drawing.Point(10, 130),
                 Text = "Снять",
                 Width = 210
             };
             withdrawButton.Click += WithdrawButton_Click;
             balanceLabel = new Label
             {
-                Location = new System.Drawing.Point(10, 130),
+                Location = new System.Drawing.Point(10, 160),
                 Width = 200,
-                Text = "Баланс: 0"
+                Height = 35
             };
             this.Controls.Add(nameTextBox);
+            this.Controls.Add(nameLabel);
             this.Controls.Add(amountTextBox);
+            this.Controls.Add(amountLabel);
             this.Controls.Add(createAccountButton);
             this.Controls.Add(depositButton);
             this.Controls.Add(withdrawButton);
@@ -74,13 +90,13 @@ namespace BankAccountApp
                 return;
             }
             decimal initialBalance;
-            if (!decimal.TryParse(amountTextBox.Text, out initialBalance))
+            if (!decimal.TryParse(amountTextBox.Text, out initialBalance) || initialBalance < 0)
             {
                 MessageBox.Show("Неверный формат суммы!");
                 return;
             }
             account = new BankAccount(nameTextBox.Text, initialBalance);
-            balanceLabel.Text = $"Баланс: {initialBalance}";
+            balanceLabel.Text = $"Владелец счёта: {nameTextBox.Text}\nБаланс: {account.GetBalance()}";
             MessageBox.Show("Счёт создан!");
         }
         private void DepositButton_Click(object sender, EventArgs e)
@@ -96,7 +112,7 @@ namespace BankAccountApp
                 return;
             }
             decimal amount;
-            if (!decimal.TryParse(amountTextBox.Text, out amount))
+            if (!decimal.TryParse(amountTextBox.Text, out amount) || amount <= 0)
             {
                 MessageBox.Show("Неверный формат суммы!");
                 return;
@@ -104,7 +120,7 @@ namespace BankAccountApp
             try
             {
                 account.Deposit(amount);
-                balanceLabel.Text = $"Баланс: {account.GetBalance()}";
+                balanceLabel.Text = $"Владелец счёта: {nameTextBox.Text}\nБаланс: {account.GetBalance()}";
                 MessageBox.Show("Счёт пополнен!");
             }
             catch (Exception ex)
@@ -125,7 +141,7 @@ namespace BankAccountApp
                 return;
             }
             decimal amount;
-            if (!decimal.TryParse(amountTextBox.Text, out amount))
+            if (!decimal.TryParse(amountTextBox.Text, out amount) || amount <= 0)
             {
                 MessageBox.Show("Неверный формат суммы!");
                 return;
@@ -133,7 +149,7 @@ namespace BankAccountApp
             try
             {
                 account.Withdraw(amount);
-                balanceLabel.Text = $"Баланс: {account.GetBalance()}";
+                balanceLabel.Text = $"Владелец счёта: {nameTextBox.Text}\nБаланс: {account.GetBalance()}";
                 MessageBox.Show("Средства сняты!");
             }
             catch (Exception ex)
