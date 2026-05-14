@@ -14,6 +14,7 @@ namespace BankAccountApp
         public Button createAccountButton;
         public Button depositButton;
         public Button withdrawButton;
+        public Button openHistoryButton;
         public BankAccountForm()
         {
             this.Text = "Управление банковским счётом";
@@ -68,6 +69,13 @@ namespace BankAccountApp
                 Width = 200,
                 Height = 35
             };
+            openHistoryButton = new Button
+            {
+                Location = new System.Drawing.Point(10, 200),
+                Text = "История операций",
+                Width = 150
+            };
+            openHistoryButton.Click += OpenHistoryButton_Click;
             this.Controls.Add(nameTextBox);
             this.Controls.Add(nameLabel);
             this.Controls.Add(amountTextBox);
@@ -75,6 +83,7 @@ namespace BankAccountApp
             this.Controls.Add(createAccountButton);
             this.Controls.Add(depositButton);
             this.Controls.Add(withdrawButton);
+            this.Controls.Add(openHistoryButton);
             this.Controls.Add(balanceLabel);
         }
         private void CreateAccountButton_Click(object sender, EventArgs e)
@@ -157,5 +166,17 @@ namespace BankAccountApp
                 MessageBox.Show(ex.Message);
             }
         }
+        private void OpenHistoryButton_Click(object sender, EventArgs e)
+        {
+            if (account == null)
+            {
+                MessageBox.Show("Счёт не создан.");
+                return;
+            }
+
+            OperationHistoryForm form = new OperationHistoryForm(account);
+            form.ShowDialog();
+        }
+
     }
 }

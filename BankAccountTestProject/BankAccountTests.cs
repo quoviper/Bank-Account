@@ -179,5 +179,57 @@
             BankAccount account = new BankAccount("Daniil", 100);
             InvalidOperationException exception = Assert.Throws<InvalidOperationException>(() => account.Withdraw(150));
         }
+
+        [TestMethod]
+        public void ConstructorAddsCreationHistoryRecord()
+        {
+            BankAccount account = new BankAccount("Daniil", 500);
+
+            var history = account.GetOperationRecords();
+
+            Assert.AreEqual(1, history.Count);
+            Assert.AreEqual("Создание счёта", history[0].Type);
+            Assert.AreEqual(500m, history[0].Amount);
+        }
+
+        [TestMethod]
+        public void DepositAddsHistoryRecord()
+        {
+            BankAccount account = new BankAccount("Daniil", 500);
+
+            account.Deposit(250);
+
+            var history = account.GetOperationRecords();
+
+            Assert.AreEqual(2, history.Count);
+            Assert.AreEqual("Пополнение", history[1].Type);
+            Assert.AreEqual(250m, history[1].Amount);
+        }
+
+        [TestMethod]
+        public void WithdrawAddsHistoryRecord()
+        {
+            BankAccount account = new BankAccount("Daniil", 500);
+
+            account.Withdraw(200);
+
+            var history = account.GetOperationRecords();
+
+            Assert.AreEqual(2, history.Count);
+            Assert.AreEqual("Снятие", history[1].Type);
+            Assert.AreEqual(200m, history[1].Amount);
+        }
+
+        [TestMethod]
+        public void ClearHistoryRemovesAllRecords()
+        {
+            BankAccount account = new BankAccount("Daniil", 500);
+
+            account.Deposit(100);
+            account.Withdraw(50);
+            account.ClearHistory();
+
+            Assert.AreEqual(0, account.GetOperationRecords().Count);
+        }
     }
 }
